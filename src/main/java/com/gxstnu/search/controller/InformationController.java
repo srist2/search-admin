@@ -122,7 +122,6 @@ public class InformationController {
     public Result isShowInfo(@RequestBody Map params) {
         Integer infoId = (Integer) params.get("infoId");
         Integer isShow = (Integer) params.get("isShow");
-        System.out.println("infoId" + infoId + isShow);
         int flagInfo = informationService.updateIsShowById(isShow, infoId);
         if (flagInfo == 1) {
             return Result.success(ResultCode.SUCCESS);
