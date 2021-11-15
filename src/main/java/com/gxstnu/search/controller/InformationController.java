@@ -123,6 +123,7 @@ public class InformationController {
         Integer infoId = (Integer) params.get("infoId");
         Integer isShow = (Integer) params.get("isShow");
         int flagInfo = informationService.updateIsShowById(isShow, infoId);
+        System.out.println("flagInfo" + flagInfo);
         if (flagInfo == 1) {
             return Result.success(ResultCode.SUCCESS);
         }
