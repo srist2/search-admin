@@ -3,9 +3,7 @@ package com.gxstnu.search.utils;
 import com.gxstnu.search.entity.dict.MissTypeDict;
 import com.gxstnu.search.entity.dict.SeekTypeDict;
 import com.gxstnu.search.entity.dict.SexDict;
-import org.springframework.boot.system.ApplicationHome;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -34,4 +34,8 @@ public interface InformationRepository extends JpaRepository<Information, Intege
     @Transactional
     @Query(value = "update miss_person_information set infoIsShow = ?1 where infoId = ?2")
     public int updateIsShowById(Integer isShow, Integer infoId);
+
+    // 查询展示的失踪者信息
+    @Query(value = "select ifm from miss_person_information as ifm where ifm.infoIsShow=?1")
+    public List<Information> findAllByIsShow(Integer isShow);
 }

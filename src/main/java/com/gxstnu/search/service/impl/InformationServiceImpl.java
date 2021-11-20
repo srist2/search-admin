@@ -16,24 +16,19 @@ public class InformationServiceImpl implements InformationService {
     @Autowired
     private InformationRepository informationRepository;
 
-    /**
-     * 查询所有失踪者信息
-     * @return Information
-     */
+    // 查询所有
     @Override
     public List<Information> findAll() {
         return informationRepository.findAll();
     }
 
-    /**
-     * 添加/更新失踪信息
-     * @return Information
-     */
+    // 添加/更新
     @Override
     public Information save(Information information) {
         return informationRepository.save(information);
     }
 
+    // 更新失踪者信息
     @Override
     public int saveByClass(Information information) {
         int flag = 0;
@@ -48,35 +43,36 @@ public class InformationServiceImpl implements InformationService {
         return flag;
     }
 
-    /**
-     * 更新志愿者ct_by_id 外键
-     * @param ctId  联系人ct_id
-     * @param infoId 失踪者信息id
-     * @return  {Integer} 0 1
-     */
+
+    // 更新志愿者ctById 外键
     @Override
     public int updateCtById(Integer ctId, Integer infoId) {
         return informationRepository.updateCtById(ctId, infoId);
     }
 
-    /**
-     * 删除失踪者信息
-     * @param id  失踪者id
-     * @return {Integer} 0 1
-     */
+
+    // 删除失踪者信息
     @Override
     public int deleteByInfoId(Integer id) {
         return informationRepository.deleteByInfoId(id);
     }
 
-    /**
-     * 更新失踪者信息是否发布
-     * @param isShow    是否发表
-     * @param infoId    失踪者信息id
-     * @return {Integer} 0 1
-     */
+
+    // 更新失踪者信息是否发布
     @Override
     public int updateIsShowById(Integer isShow, Integer infoId) {
         return informationRepository.updateIsShowById(isShow, infoId);
+    }
+
+    // 查询展示的失踪者信息
+    @Override
+    public List<Information> findAllByIsShow(Integer isShow) {
+        return informationRepository.findAllByIsShow(isShow);
+    }
+
+    // 根据Id查询
+    @Override
+    public List<Information> findAllByInfoId(Integer id) {
+        return informationRepository.findByInfoId(id);
     }
 }

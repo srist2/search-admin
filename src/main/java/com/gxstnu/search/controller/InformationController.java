@@ -39,30 +39,11 @@ public class InformationController {
     public Result add(@RequestBody InfoAndContactVo model) {
         System.out.println("model" + model);
         // 联系人信息
-        ContactPerson contactPerson = new ContactPerson();
-        contactPerson.setContactId(model.getContactPerson().getContactId());
-        contactPerson.setCtName(model.getContactPerson().getCtName());
-        contactPerson.setCtPhone(model.getContactPerson().getCtPhone());
-        contactPerson.setCtEmail(model.getContactPerson().getCtEmail());
-        contactPerson.setCtRemark(model.getContactPerson().getCtRemark());
-        contactPerson.setCtAddress(model.getContactPerson().getCtAddress());
-        contactPerson.setCtZipCode(model.getContactPerson().getCtZipCode());
+        ContactPerson contactPerson = initContactPerson(model);
         ContactPerson contactP = contactPersonService.save(contactPerson);
         System.out.println("contactP" + contactP);
         // 失踪者信息
-        Information information = new Information();
-        information.setInfoId(model.getInfoId());
-        information.setInfoName(model.getInfoName());
-        information.setInfoAvatar(model.getInfoAvatar());
-        information.setInfoSex(model.getInfoSex());
-        information.setInfoHometown(model.getInfoHometown());
-        information.setInfoSeekType(model.getInfoSeekType());
-        information.setInfoMissType(model.getInfoMissType());
-        information.setInfoDateBirth(model.getInfoDateBirth());
-        information.setInfoDateMiss(model.getInfoDateMiss());
-        information.setInfoMissHigh(model.getInfoMissHigh());
-        information.setInfoMissPlace(model.getInfoMissPlace());
-        information.setInfoDescribe(model.getInfoDescribe());
+        Information information = initInformation(model);
         Information info = informationService.save(information);
         System.out.println("info" + info);
         int flag = informationService.updateCtById(contactP.getContactId(), info.getInfoId());
@@ -75,28 +56,9 @@ public class InformationController {
     @PostMapping("/update")
     public Result update(@RequestBody InfoAndContactVo model) {
         // 失踪者信息
-        Information information = new Information();
-        information.setInfoId(model.getInfoId());
-        information.setInfoName(model.getInfoName());
-        information.setInfoAvatar(model.getInfoAvatar());
-        information.setInfoSex(model.getInfoSex());
-        information.setInfoHometown(model.getInfoHometown());
-        information.setInfoSeekType(model.getInfoSeekType());
-        information.setInfoMissType(model.getInfoMissType());
-        information.setInfoDateBirth(model.getInfoDateBirth());
-        information.setInfoDateMiss(model.getInfoDateMiss());
-        information.setInfoMissHigh(model.getInfoMissHigh());
-        information.setInfoMissPlace(model.getInfoMissPlace());
-        information.setInfoDescribe(model.getInfoDescribe());
+        Information information = initInformation(model);
         // 联系人信息
-        ContactPerson contactPerson = new ContactPerson();
-        contactPerson.setContactId(model.getContactPerson().getContactId());
-        contactPerson.setCtName(model.getContactPerson().getCtName());
-        contactPerson.setCtPhone(model.getContactPerson().getCtPhone());
-        contactPerson.setCtEmail(model.getContactPerson().getCtEmail());
-        contactPerson.setCtRemark(model.getContactPerson().getCtRemark());
-        contactPerson.setCtAddress(model.getContactPerson().getCtAddress());
-        contactPerson.setCtZipCode(model.getContactPerson().getCtZipCode());
+        ContactPerson contactPerson = initContactPerson(model);
         // 更新
         int flag = informationService.saveByClass(information);
         contactPersonService.save(contactPerson);
@@ -111,13 +73,14 @@ public class InformationController {
         Integer infoId = (Integer) params.get("infoId");
         Integer contactId = (Integer) params.get("contactId");
         int flagInfo = informationService.deleteByInfoId(infoId);
-        int flagCtn = informationService.deleteByInfoId(infoId);
+        int flagCtn = contactPersonService.deleteByCntId(contactId);
         if (flagInfo == 1 && flagCtn == 1) {
             return Result.success(ResultCode.SUCCESS);
         }
         return Result.fail(ResultCode.FAIL);
     }
 
+    // 更新失踪者信息是否展示
     @PostMapping("/isShowInfo")
     public Result isShowInfo(@RequestBody Map params) {
         Integer infoId = (Integer) params.get("infoId");
@@ -128,5 +91,56 @@ public class InformationController {
             return Result.success(ResultCode.SUCCESS);
         }
         return Result.fail(ResultCode.FAIL);
+    }
+
+    // 查询展示的失踪者信息
+    @GetMapping("/findAllByIsShow")
+    public Result findAllByIsShow() {
+        // 查询失踪者
+        List<Information> informationList = informationService.findAllByIsShow(1);
+        if (informationList.size() > 0) {
+            return Result.success(informationList);
+        } else {
+            return Result.fail(500);
+        }
+    }
+
+    /**
+     * 初始化Information
+     * @param model InfoAndContactVo
+     * @return {Object} initInformation
+     */
+    public Information initInformation(InfoAndContactVo model) {
+        Information information = new Information();
+        information.setInfoId(model.getInfoId());
+        information.setInfoName(model.getInfoName());
+        information.setInfoAvatar(model.getInfoAvatar());
+        information.setInfoSex(model.getInfoSex());
+        information.setInfoHometown(model.getInfoHometown());
+        information.setInfoSeekType(model.getInfoSeekType());
+        information.setInfoMissType(model.getInfoMissType());
+        information.setInfoDateBirth(model.getInfoDateBirth());
+        information.setInfoDateMiss(model.getInfoDateMiss());
+        information.setInfoMissHigh(model.getInfoMissHigh());
+        information.setInfoMissPlace(model.getInfoMissPlace());
+        information.setInfoDescribe(model.getInfoDescribe());
+        return information;
+    }
+
+    /**
+     * 初始化ContactPerson
+     * @param model InfoAndContactVo
+     * @return {Object} ContactPerson
+     */
+    public ContactPerson initContactPerson(InfoAndContactVo model) {
+        ContactPerson contactPerson = new ContactPerson();
+        contactPerson.setContactId(model.getContactPerson().getContactId());
+        contactPerson.setCtName(model.getContactPerson().getCtName());
+        contactPerson.setCtPhone(model.getContactPerson().getCtPhone());
+        contactPerson.setCtEmail(model.getContactPerson().getCtEmail());
+        contactPerson.setCtRemark(model.getContactPerson().getCtRemark());
+        contactPerson.setCtAddress(model.getContactPerson().getCtAddress());
+        contactPerson.setCtZipCode(model.getContactPerson().getCtZipCode());
+        return contactPerson;
     }
 }
