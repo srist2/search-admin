@@ -68,5 +68,5 @@ public interface InformationService {
      * @param id
      * @return Information
      */
-    public List<Information> findAllByInfoId(Integer id);
+    public Information findAllByInfoId(Integer id);
 }

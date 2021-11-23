@@ -3,7 +3,8 @@ package com.gxstnu.search.utils;
 import lombok.Getter;
 
 /**
- * ResultCode 枚举
+ * 统一返回结果状态信息类
+ * enum 枚举类
  */
 
 @Getter
@@ -27,7 +28,12 @@ public enum ResultCode {
     USER_LOGIN_ERROR(2002, "账号不存在或者密码错误"),
     USER_ACCOUNT_FORBIDDEN(2003, "账户被禁用"),
     USER_NOT_EXISTS(2004, "用户不存在"),
-    USER_HAS_EXISTED(2005, "用户已存在");
+    USER_HAS_EXISTED(2005, "用户已存在"),
+    /**
+     * 邮件错误
+     */
+    EMAIL_FEND_SUCCESS(3001, "邮件发送成功"),
+    EMAIL_FEND_ERROR(3002, "邮件发送失败");
 
     /**
      * 错误代码

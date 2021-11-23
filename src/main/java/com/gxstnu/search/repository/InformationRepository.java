@@ -12,10 +12,8 @@ import java.util.List;
 public interface InformationRepository extends JpaRepository<Information, Integer> {
 
     // 根据id查询
-    @Modifying
-    @Transactional
     @Query(value = "select ifm from miss_person_information as ifm where ifm.infoId=?1")
-    public List<Information> findByInfoId(Integer id);
+    public Information findByInfoId(Integer id);
 
     // 根据info_id更新外键ct_by_id
     @Modifying

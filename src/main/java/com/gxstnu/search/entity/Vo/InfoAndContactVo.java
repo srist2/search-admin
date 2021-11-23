@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * 失踪者和联系人对象
+ */
 @Data
 public class InfoAndContactVo {
     private Integer infoId;
