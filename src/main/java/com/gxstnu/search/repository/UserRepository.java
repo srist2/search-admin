@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 
@@ -20,4 +22,12 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Modifying
     @Transactional
     public void deleteByUserId(Integer id);
+
+    // 查询用户账号是否存在
+    @Query(value = "select count (u.userName) from user as u where u.userName=?1")
+    public int findByUserName(String userName);
+
+    // 判断用户账号登录信息
+    @Query(value = "select u.userName as userName, u.password as password, u.status as status from user as u where u.userName=?1 and u.password=?2")
+    public List<Map<String,User>> login(String userName, String password);
 }

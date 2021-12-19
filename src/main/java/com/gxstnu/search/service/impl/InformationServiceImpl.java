@@ -1,12 +1,10 @@
 package com.gxstnu.search.service.impl;
 
-import com.gxstnu.search.entity.Volunteer;
 import com.gxstnu.search.entity.missPerson.Information;
 import com.gxstnu.search.repository.InformationRepository;
 import com.gxstnu.search.service.InformationService;
 import com.gxstnu.search.utils.JpaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +16,6 @@ public class InformationServiceImpl implements InformationService {
     private InformationRepository informationRepository;
 
     // 查询所有
-    @Cacheable(cacheNames = "info", unless = "#result == null")
     @Override
     public List<Information> findAll() {
         return informationRepository.findAll();
@@ -67,14 +64,12 @@ public class InformationServiceImpl implements InformationService {
     }
 
     // 查询展示的失踪者信息
-    @Cacheable(cacheNames = "infoByIsShow", unless = "#result == null")
     @Override
     public List<Information> findAllByIsShow(Integer isShow) {
         return informationRepository.findAllByIsShow(isShow);
     }
 
     // 根据Id查询
-    @Cacheable(cacheNames = "infoByInfoId", unless = "#result == null")
     @Override
     public Information findAllByInfoId(Integer id) {
         return informationRepository.findByInfoId(id);

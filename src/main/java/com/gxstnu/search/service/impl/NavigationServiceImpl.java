@@ -4,7 +4,6 @@ import com.gxstnu.search.entity.Navigation;
 import com.gxstnu.search.repository.NavigationRepository;
 import com.gxstnu.search.service.NavigationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -17,7 +16,6 @@ public class NavigationServiceImpl implements NavigationService {
     @Autowired
     NavigationRepository navigationRepository;
 
-    @Cacheable(cacheNames = "navigation", unless = "#result == null")
     @Override
     public Map<String, Object> findMenu() {
         Map<String,Object> data = new HashMap<>();

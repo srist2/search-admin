@@ -17,7 +17,6 @@ public class VolunteerServiceImpl implements VolunteerService {
     @Autowired
     VolunteerRepository volunteerRepository;
 
-    @Cacheable(cacheNames = "volunteer", unless = "#result == null")
     @Override
     public List<Volunteer> findAll() {
         return volunteerRepository.findAll();

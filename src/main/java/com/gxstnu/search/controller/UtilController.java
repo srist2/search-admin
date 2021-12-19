@@ -5,10 +5,7 @@ import com.gxstnu.search.utils.UploadUtils;
 import com.gxstnu.search.utils.Utils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -25,11 +22,10 @@ import java.util.UUID;
 /**
  * 文件上传
  */
-@Controller
+@RestController
 public class UtilController {
 
     @PostMapping(value = "/fileUpload")
-    @ResponseBody
     public Result fileUpload(@RequestParam(value = "file") MultipartFile file, Model model, HttpServletRequest request) {
         if (file.isEmpty()) {
             System.out.println("文件为空空");

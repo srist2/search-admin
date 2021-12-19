@@ -49,4 +49,19 @@ public interface UserService {
      * @return {Object} User
      */
     public User save(User user);
+
+    /**
+     * 判断用户账户是否存在
+     * @param userName  账号
+     * @return 1: 成功 0: 失败
+     */
+    public int findByUserName(String userName);
+
+    /**
+     * 用户登录
+     * @param userName  用户名
+     * @param password  用户密码
+     * @return  1: 成功 2: 失败
+     */
+    public User login(String userName, String password);
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/volunteer")
 public class VolunteerController {
 
@@ -26,7 +26,6 @@ public class VolunteerController {
      * 查询所有
      */
     @GetMapping("/findAll")
-    @ResponseBody
     public List<Volunteer> findAll() {
         return volunteerService.findAll();
     }
@@ -35,7 +34,6 @@ public class VolunteerController {
      * 查询志愿者列表
      */
     @GetMapping("/findVolunteerList")
-    @ResponseBody
     public List<Map<String,Object>> findVolunteerList() {
         return volunteerService.findVolunteerList();
     }
@@ -44,7 +42,6 @@ public class VolunteerController {
      * 更新志愿者列表
      */
     @PostMapping("/updateVolunteerList")
-    @ResponseBody
     public Result updateVolunteerList(@RequestBody VolunteerAndUserVo listVo) {
         System.out.println("lisVo" + listVo);
         // 创建志愿者对象
@@ -73,7 +70,6 @@ public class VolunteerController {
      * 删除志愿者信息
      */
     @PostMapping("/deleteVolunteer")
-    @ResponseBody
     public Result deleteVolunteer(@RequestBody Map params) {
         Integer userId = (Integer) params.get("userId");
         // 按照user_id删除user表和volunteer表中数据
@@ -86,7 +82,6 @@ public class VolunteerController {
      * 增加志愿者信息
      */
     @PostMapping("addVolunteer")
-    @ResponseBody
     public Result addVolunteer(@RequestBody VolunteerAndUserVo listVo) {
 
         User user = new User();

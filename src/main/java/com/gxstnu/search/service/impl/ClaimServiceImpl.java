@@ -4,7 +4,6 @@ import com.gxstnu.search.entity.missPerson.Claim;
 import com.gxstnu.search.repository.ClaimRepository;
 import com.gxstnu.search.service.ClaimService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +15,6 @@ public class ClaimServiceImpl implements ClaimService {
     private ClaimRepository claimRepository;
 
     // 查询所有
-    @Cacheable(cacheNames = "claim", unless = "#result == null")
     @Override
     public List<Claim> findAll() {
         return claimRepository.findAll();
