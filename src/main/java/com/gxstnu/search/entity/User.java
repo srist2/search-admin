@@ -49,4 +49,7 @@ public class User {
 
     @Transient
     private Volunteer volunteer;
+    // token
+    @Transient
+    private String token;
 }

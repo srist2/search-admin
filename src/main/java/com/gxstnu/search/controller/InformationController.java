@@ -49,7 +49,6 @@ public class InformationController {
         int flag = informationService.updateCtById(contactP.getContactId(), info.getInfoId());
 
         return Result.success(flag);
-
     }
 
     // 更新

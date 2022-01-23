@@ -1,5 +1,6 @@
 package com.gxstnu.search.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.gxstnu.search.entity.User;
 import com.gxstnu.search.entity.Vo.VolunteerAndUserVo;
 import com.gxstnu.search.entity.Volunteer;
@@ -8,10 +9,7 @@ import com.gxstnu.search.service.VolunteerService;
 import com.gxstnu.search.utils.Result;
 import com.gxstnu.search.utils.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
@@ -30,7 +28,6 @@ public class AdminController {
      */
     @PostMapping("/login")
     public Result login(@RequestBody User user) {
-        System.out.println("user" + user);
         // 判断账号是否存在
         int flag = userService.findByUserName(user.getUserName());
         if (flag == 0) {
@@ -45,7 +42,11 @@ public class AdminController {
         if (user1.getStatus() == 2) {
             return Result.fail(ResultCode.USER_ACCOUNT_FORBIDDEN.getMessage());
         }
-        return Result.success(ResultCode.USER_LOGIN_SUCCESS.getMessage());
+        //当前用户登录
+        StpUtil.setLoginId(user.getUserName());
+        //设置token值
+        user1.setToken(StpUtil.getTokenValue());
+        return Result.success(user1);
     }
 
     /**
@@ -76,7 +77,7 @@ public class AdminController {
         User user1 = userService.save(user);
         uFlag = user1.getUserId() > 0;
         // 判断用户类型是否为志愿者
-        if (vu.getRole().equals(2)) {
+        if (vu.getRole() == 2) {
             Volunteer volunteer = new Volunteer();
             volunteer.setRole(vu.getRole());
             volunteer.setIdCard(vu.getIdCard());
@@ -88,9 +89,27 @@ public class AdminController {
             Volunteer volunteer1 = volunteerService.save(volunteer);
             vFlag = volunteer1.getVtUserId() > 0;
         }
-        if (uFlag && vFlag) {
+        // 用户类型为普通
+        if (vu.getRole() == 1 && uFlag) {
+            return Result.success(ResultCode.USER_REGISTER_SUCCESS.getMessage());
+        }
+        // 用户类型为志愿者
+        if (vu.getRole() == 2 && uFlag && vFlag) {
             return Result.success(ResultCode.USER_REGISTER_SUCCESS.getMessage());
         }
         return Result.fail(ResultCode.PARAM_TYPE_ERROR.getMessage());
+    }
+
+    /**
+     * 用户登出
+     * @return  Result
+     */
+    @GetMapping("/loginOut")
+    public Result loginOut() {
+        StpUtil.setLoginId("admin");
+        System.out.println("isLogin" + StpUtil.isLogin());
+        StpUtil.logout();
+        System.out.println("isLogin" + StpUtil.isLogin());
+        return Result.success(StpUtil.getTokenInfo());
     }
 }

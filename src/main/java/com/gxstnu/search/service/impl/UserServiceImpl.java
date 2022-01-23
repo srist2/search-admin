@@ -113,6 +113,7 @@ public class UserServiceImpl implements UserService {
             user.setUserName(String.valueOf(user2.get("userName")));
             user.setPassword(String.valueOf(user2.get("password")));
             user.setStatus(Integer.valueOf(String.valueOf(user2.get("status"))));
+            user.setRole(Integer.valueOf(String.valueOf(user2.get("role"))));
         }
         return user;
     }
