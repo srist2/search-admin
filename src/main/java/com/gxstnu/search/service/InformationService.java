@@ -69,4 +69,16 @@ public interface InformationService {
      * @return Information
      */
     public Information findAllByInfoId(Integer id);
+
+    /**
+     * 根据寻找类型和是否展示倒序查询
+     * @return
+     */
+    public List<Information> findSeekTypeByIsShow(Integer seekType, Integer isShow);
+
+    /**
+     * 根据寻找类型(其他类型)和是否展示倒序查询
+     * @return
+     */
+    public List<Information> findSeekOtherTypeByIsShow();
 }

@@ -25,6 +25,6 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
     // 查询志愿者信息
     @Modifying
     @Transactional
-    @Query(value = "select vlt from volunteer as vlt where vlt.role=?1")
+    @Query(value = "select vlt from volunteer as vlt where vlt.vtUserId=?1")
     public List<Volunteer> findByVtUserId(Integer id);
 }

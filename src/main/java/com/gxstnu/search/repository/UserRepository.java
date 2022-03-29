@@ -28,6 +28,19 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     public int findByUserName(String userName);
 
     // 判断用户账号登录信息
-    @Query(value = "select u.userName as userName, u.password as password, u.status as status, u.role as role from user as u where u.userName=?1 and u.password=?2")
+    @Query(value = "select u.userId as userId, u.userName as userName, u.password as password, u.status as status, u.role as role from user as u where u.userName=?1 and u.password=?2")
     public List<Map<String,User>> login(String userName, String password);
+
+    // 根据用户ID查询 用于添加到失踪认领表 返回用户名、手机号、邮箱
+    @Query(value = "select nick_name as nickName, phone, email from user where user_id = ?1", nativeQuery = true)
+    public List<Map<String, Object>> findAddClaimById(Integer userId);
+
+    // 根据用户名查询用户ID
+    @Query(value = "select u from user as u where u.userName=?1")
+    public User findIdByUserName(String userName);
+
+    // 获取用户类型数量
+    @Query(value = "select sum(role = 1) as generalUserNumber, sum(role = 2) as volunteerNumber, sum(role = 3) as adminNumber, count(*) as userNumber from user", nativeQuery = true)
+    public List<Map<String,Object>> getUserTypeNumber();
+
 }

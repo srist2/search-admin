@@ -3,6 +3,7 @@ package com.gxstnu.search.controller;
 import com.gxstnu.search.entity.Vo.InfoAndContactVo;
 import com.gxstnu.search.entity.missPerson.ContactPerson;
 import com.gxstnu.search.entity.missPerson.Information;
+import com.gxstnu.search.repository.InformationRepository;
 import com.gxstnu.search.service.ContactPersonService;
 import com.gxstnu.search.service.InformationService;
 import com.gxstnu.search.utils.Result;
@@ -10,6 +11,8 @@ import com.gxstnu.search.utils.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +22,8 @@ public class InformationController {
 
     @Autowired
     private InformationService informationService;
+    @Resource
+    private InformationRepository informationRepository;
     @Autowired
     private ContactPersonService contactPersonService;
 
@@ -37,15 +42,12 @@ public class InformationController {
     // 添加失踪者信息
     @PostMapping("/add")
     public Result add(@RequestBody InfoAndContactVo model) {
-        System.out.println("model" + model);
         // 联系人信息
         ContactPerson contactPerson = initContactPerson(model);
         ContactPerson contactP = contactPersonService.save(contactPerson);
-        System.out.println("contactP" + contactP);
         // 失踪者信息
         Information information = initInformation(model);
         Information info = informationService.save(information);
-        System.out.println("info" + info);
         int flag = informationService.updateCtById(contactP.getContactId(), info.getInfoId());
 
         return Result.success(flag);
@@ -85,7 +87,6 @@ public class InformationController {
         Integer infoId = (Integer) params.get("infoId");
         Integer isShow = (Integer) params.get("isShow");
         int flagInfo = informationService.updateIsShowById(isShow, infoId);
-        System.out.println("flagInfo" + flagInfo);
         if (flagInfo == 1) {
             return Result.success(ResultCode.SUCCESS);
         }
@@ -104,8 +105,39 @@ public class InformationController {
         }
     }
 
+    // 根据寻找类型和是否展示倒序查询
+    @PostMapping("/findSeekTypeByIsShow")
+    public Result findSeekTypeByIsShow(@RequestBody Map params) {
+        Integer seekType = (Integer) params.get("seekType");
+        Integer isShow = (Integer) params.get("isShow");
+        // 查询失踪者
+        List<Information> informationList;
+        if (seekType == 0) {
+            informationList = informationService.findSeekOtherTypeByIsShow();
+        } else {
+            informationList = informationService.findSeekTypeByIsShow(seekType, isShow);
+        }
+        if (informationList.size() > 0) {
+            return Result.success(informationList);
+        } else {
+            return Result.fail(500);
+        }
+    }
+
+    // 根据ID查询用户信息
+    @PostMapping("/findById")
+    public Result findById(@RequestBody Map params) {
+        Integer infoId = Integer.parseInt(params.get("infoId").toString());
+        Information information = informationService.findAllByInfoId(infoId);
+        if (information != null) {
+            return Result.success(information);
+        }
+        return Result.fail(ResultCode.PARAM_IS_INVALID.getMessage());
+    }
+
     /**
      * 初始化Information
+     *
      * @param model InfoAndContactVo
      * @return {Object} initInformation
      */
@@ -128,6 +160,7 @@ public class InformationController {
 
     /**
      * 初始化ContactPerson
+     *
      * @param model InfoAndContactVo
      * @return {Object} ContactPerson
      */

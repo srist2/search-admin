@@ -31,7 +31,7 @@ public class VolunteerController {
     }
 
     /**
-     * 查询志愿者列表
+     * 查询所有
      */
     @GetMapping("/findVolunteerList")
     public List<Map<String,Object>> findVolunteerList() {
@@ -43,7 +43,6 @@ public class VolunteerController {
      */
     @PostMapping("/updateVolunteerList")
     public Result updateVolunteerList(@RequestBody VolunteerAndUserVo listVo) {
-        System.out.println("lisVo" + listVo);
         // 创建志愿者对象
         Volunteer volunteer = new Volunteer();
         volunteer.setVolunteerId(listVo.getVolunteerId());
@@ -83,7 +82,7 @@ public class VolunteerController {
      */
     @PostMapping("addVolunteer")
     public Result addVolunteer(@RequestBody VolunteerAndUserVo listVo) {
-
+        // 创建用户对象
         User user = new User();
         user.setUserName(listVo.getUserName());
         user.setPassword(listVo.getPassword());
@@ -94,7 +93,7 @@ public class VolunteerController {
         user.setStatus(listVo.getStatus());
         user.setRole(listVo.getRole());
         User user1 = userService.save(user);
-
+        // 创建志愿者对象
         Volunteer volunteer = new Volunteer();
         volunteer.setRole(listVo.getRole());
         volunteer.setIdCard(listVo.getIdCard());

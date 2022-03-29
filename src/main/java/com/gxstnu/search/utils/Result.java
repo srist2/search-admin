@@ -32,7 +32,7 @@ public class Result<T> {
         this.message = "ok";
         this.data = null;
     }
-    private Result(ResultCode resultCode,T data){
+    public Result(ResultCode resultCode,T data){
         this.status = resultCode.getStatus();
         this.message = resultCode.getMessage();
         this.data = data;

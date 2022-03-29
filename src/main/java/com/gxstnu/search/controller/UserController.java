@@ -2,6 +2,7 @@ package com.gxstnu.search.controller;
 
 import com.gxstnu.search.entity.User;
 import com.gxstnu.search.entity.Vo.VolunteerAndUserVo;
+import com.gxstnu.search.entity.Volunteer;
 import com.gxstnu.search.entity.missPerson.ContactPerson;
 import com.gxstnu.search.entity.missPerson.Information;
 import com.gxstnu.search.repository.ContactPersonRepository;
@@ -68,6 +69,20 @@ public class UserController {
         int flag = userService.saveUserByClass(user);
         if (flag == 0) {
             return Result.fail(flag);
+        }
+        // 判断用户类型
+        if (user.getRole() == 2) {
+            Volunteer volunteer = new Volunteer();
+            List<Volunteer> byVtUserId = volunteerService.findByVtUserId(user.getUserId());
+            // 判断是否已存在志愿者表中
+            if (byVtUserId.size() > 0) {
+                for (Volunteer volunteer1: byVtUserId) {
+                    volunteer.setVolunteerId(volunteer1.getVolunteerId());
+                }
+            }
+            volunteer.setVtUserId(user.getUserId());
+            volunteer.setRole(user.getRole());
+            volunteerService.save(volunteer);
         }
         return Result.success(flag);
     }

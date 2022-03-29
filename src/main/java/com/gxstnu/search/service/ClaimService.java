@@ -18,4 +18,6 @@ public interface ClaimService {
      * @return {Integer} 0:失败 1:成功
      */
     public int updateIsPass(Integer isPass, Integer claimId);
+
+    public Claim save(Claim claim);
 }

@@ -36,4 +36,12 @@ public interface InformationRepository extends JpaRepository<Information, Intege
     // 查询展示的失踪者信息
     @Query(value = "select ifm from miss_person_information as ifm where ifm.infoIsShow=?1")
     public List<Information> findAllByIsShow(Integer isShow);
+
+    // 根据寻找类型和是否展示倒序查询
+    @Query(value = "select ifm from miss_person_information as ifm where ifm.infoSeekType =?1 and ifm.infoIsShow=?2 order by ifm.infoId desc")
+    public List<Information> findSeekTypeByIsShow(Integer seekType, Integer isShow);
+
+    // 根据寻找类型(其他类型)和是否展示倒序查询
+    @Query(value = "select ifm from miss_person_information as ifm where ifm.infoSeekType != 1 and ifm.infoSeekType != 2 and ifm.infoIsShow=1 order by ifm.infoId desc")
+    public List<Information> findSeekOtherTypeByIsShow();
 }

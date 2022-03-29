@@ -74,4 +74,15 @@ public class InformationServiceImpl implements InformationService {
     public Information findAllByInfoId(Integer id) {
         return informationRepository.findByInfoId(id);
     }
+
+    // 根据寻找类型和是否展示倒序查询
+    @Override
+    public List<Information> findSeekTypeByIsShow(Integer seekType, Integer isShow) {
+        return informationRepository.findSeekTypeByIsShow(seekType, isShow);
+    }
+    // 根据寻找类型(其他类型)和是否展示倒序查询
+    @Override
+    public List<Information> findSeekOtherTypeByIsShow() {
+        return informationRepository.findSeekOtherTypeByIsShow();
+    }
 }

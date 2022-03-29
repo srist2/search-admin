@@ -4,12 +4,16 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.gxstnu.search.entity.User;
 import com.gxstnu.search.entity.Vo.VolunteerAndUserVo;
 import com.gxstnu.search.entity.Volunteer;
+import com.gxstnu.search.repository.UserRepository;
 import com.gxstnu.search.service.UserService;
 import com.gxstnu.search.service.VolunteerService;
 import com.gxstnu.search.utils.Result;
 import com.gxstnu.search.utils.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/admin")
@@ -107,9 +111,37 @@ public class AdminController {
     @GetMapping("/loginOut")
     public Result loginOut() {
         StpUtil.setLoginId("admin");
-        System.out.println("isLogin" + StpUtil.isLogin());
         StpUtil.logout();
-        System.out.println("isLogin" + StpUtil.isLogin());
         return Result.success(StpUtil.getTokenInfo());
+    }
+
+    /**
+     * 重置用户密码
+     *
+     * @return
+     */
+    @PostMapping("/resetPassword")
+    public Result resetPassword(@RequestBody Map params) {
+        String username = (String) params.get("userName");
+        String password = (String) params.get("password");
+        String email = (String) params.get("email");
+        User user = new User();
+        // 判断账号是否存在
+        int isUser = userService.findByUserName(username);
+        if (isUser == 0) {
+            return Result.fail(ResultCode.USER_NOT_EXISTS.getMessage());
+        }
+        // 获取账号信息
+        user = userService.findIdByUserName(username);
+        if (!user.getEmail().equals(email)) {
+            return Result.fail(ResultCode.USER_VERIFY_EMAIL.getMessage());
+        }
+        // 更新密码
+        user.setPassword(password);
+        int flag = userService.saveUserByClass(user);
+        if (flag == 0) {
+            return Result.fail(flag);
+        }
+        return Result.success(ResultCode.USER_RESET_PASSWORD.getMessage());
     }
 }

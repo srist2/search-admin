@@ -1,10 +1,13 @@
 package com.gxstnu.search.service;
 
 import com.gxstnu.search.entity.User;
+import com.gxstnu.search.entity.Vo.DateVo;
 import com.gxstnu.search.utils.Result;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
     /**
@@ -64,4 +67,24 @@ public interface UserService {
      * @return  1: 成功 2: 失败
      */
     public User login(String userName, String password);
+
+    /**
+     * 根据用户ID查询 用于添加到失踪认领表 返回用户名、手机号、邮箱
+     * @param userId
+     * @return {nickName, iphone, email} User
+     */
+    public User findAddClaimById(Integer userId);
+
+    /**
+     * 根据账号查询用户ID
+     * * @param userName 账号
+     * @return
+     */
+    public User findIdByUserName(String userName);
+
+    /**
+     *
+     * @return
+     */
+    public DateVo getUserTypeNumber();
 }

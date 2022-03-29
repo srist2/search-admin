@@ -25,4 +25,9 @@ public class ClaimServiceImpl implements ClaimService {
     public int updateIsPass(Integer isPass, Integer claimId) {
         return claimRepository.updateIsPass(isPass, claimId);
     }
+
+    @Override
+    public Claim save(Claim claim) {
+        return claimRepository.save(claim);
+    }
 }
