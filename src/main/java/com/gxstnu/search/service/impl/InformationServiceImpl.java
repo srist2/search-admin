@@ -85,4 +85,9 @@ public class InformationServiceImpl implements InformationService {
     public List<Information> findSeekOtherTypeByIsShow() {
         return informationRepository.findSeekOtherTypeByIsShow();
     }
+
+    @Override
+    public List<Information> findAllByInfoName(String infoName, Integer isShow) {
+        return informationRepository.findAllByInfoName(infoName, isShow);
+    }
 }

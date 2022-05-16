@@ -1,5 +1,6 @@
 package com.gxstnu.search.repository;
 
+import com.gxstnu.search.entity.missPerson.Claim;
 import com.gxstnu.search.entity.missPerson.Information;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -44,4 +45,7 @@ public interface InformationRepository extends JpaRepository<Information, Intege
     // 根据寻找类型(其他类型)和是否展示倒序查询
     @Query(value = "select ifm from miss_person_information as ifm where ifm.infoSeekType != 1 and ifm.infoSeekType != 2 and ifm.infoIsShow=1 order by ifm.infoId desc")
     public List<Information> findSeekOtherTypeByIsShow();
+
+    @Query(nativeQuery=true, value ="select * from miss_person_information ifm where if(IFNULL(?1, '') !='',ifm.info_name like concat('%',?1,'%'),1=1) and if(IFNULL(?2,'')!='',ifm.info_is_show = ?2,1=1)")
+    List<Information> findAllByInfoName(String infoName, Integer isPass);
 }

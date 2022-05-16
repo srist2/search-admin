@@ -20,4 +20,6 @@ public interface ClaimService {
     public int updateIsPass(Integer isPass, Integer claimId);
 
     public Claim save(Claim claim);
+
+    public List<Claim> findAllByInfoNameAndIsPass(String infoName, Integer isPass);
 }

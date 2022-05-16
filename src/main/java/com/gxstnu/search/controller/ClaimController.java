@@ -201,4 +201,26 @@ public class ClaimController {
         contactPerson.setCtZipCode(info.getContactPerson().getCtZipCode());
         return contactPerson;
     }
+
+
+    @PostMapping("/findByClaim")
+    public Result findAllByInfoNameAndIsPass(@RequestBody Map params) {
+        String infoName = (String) params.get("claimName");
+        Integer isPass = (Integer) params.get("isPass");
+        List<Claim> claimList = claimService.findAllByInfoNameAndIsPass(infoName, isPass);
+        for (Claim claim : claimList) {
+            // 根据认领者id查询失踪者信息
+            Information informationList = informationService.findAllByInfoId(claim.getInfoId());
+            // 创建一个失踪者和联系人对象
+            // 初始化失踪者信息
+            InfoAndContactVo infoVo = initInfoAndContactVo(informationList);
+            // 初始化联系人信息
+            ContactPerson contactPerson = initContactPerson(informationList);
+            // 添加联系人信息
+            infoVo.setContactPerson(contactPerson);
+            // 添加失踪者相关信息
+            claim.setInfoAndContactVo(infoVo);
+        }
+        return Result.success(claimList);
+    }
 }

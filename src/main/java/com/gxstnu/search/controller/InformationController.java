@@ -126,9 +126,9 @@ public class InformationController {
 
     // 根据ID查询用户信息
     @PostMapping("/findById")
-    public Result findById(@RequestBody Map params) {
-        Integer infoId = Integer.parseInt(params.get("infoId").toString());
-        Information information = informationService.findAllByInfoId(infoId);
+    public Result findById(@RequestBody Information info) {
+//        Integer infoId = Integer.parseInt(params.get("infoId").toString());
+        Information information = informationService.findAllByInfoId(info.getInfoId());
         if (information != null) {
             return Result.success(information);
         }
@@ -174,5 +174,13 @@ public class InformationController {
         contactPerson.setCtAddress(model.getContactPerson().getCtAddress());
         contactPerson.setCtZipCode(model.getContactPerson().getCtZipCode());
         return contactPerson;
+    }
+
+    @PostMapping("/findAllByInfoName")
+    public Result findAllByInfoName(@RequestBody Map params) {
+        String infoName = (String) params.get("infoName");
+        Integer isShow = (Integer) params.get("infoIsShow");
+        List<Information> list = informationService.findAllByInfoName(infoName, isShow);
+        return Result.success(list);
     }
 }

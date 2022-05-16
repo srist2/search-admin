@@ -81,4 +81,6 @@ public interface InformationService {
      * @return
      */
     public List<Information> findSeekOtherTypeByIsShow();
+
+    public List<Information> findAllByInfoName(String infoName, Integer isShow);
 }
